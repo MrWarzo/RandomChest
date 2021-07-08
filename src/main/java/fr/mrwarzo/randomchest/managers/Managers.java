@@ -1,5 +1,6 @@
 package fr.mrwarzo.randomchest.managers;
 
+import co.aikar.commands.PaperCommandManager;
 import fr.mrwarzo.randomchest.RandomChest;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -13,7 +14,7 @@ public class Managers {
         Managers.managers = this;
 
         try {
-            //CommandsManager.register(instance);
+            CommandsManager.loadCommands(instance);
             //EventsManager.register(instance);
 
             // Envoie d'un message de validation à la console au démarrage
