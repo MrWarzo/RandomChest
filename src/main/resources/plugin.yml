@@ -1,0 +1,8 @@
+name: Randomchest
+version: ${project.version}
+main: fr.mrwarzo.randomchest.Randomchest
+api-version: 1.16
+prefix: [ RC ]
+load: STARTUP
+authors: [ MrWarzo ]
+description: Génération de coffre aléatoire
