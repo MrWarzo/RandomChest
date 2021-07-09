@@ -58,7 +58,7 @@ public class RandomChestCommand extends BaseCommand {
         player.sendMessage("§6------------------------");
         player.sendMessage("§6Nom:      RandomChest");
         player.sendMessage("§6Auteur:   MrWarzo");
-        player.sendMessage("§6Version:  0.0.1");
+        player.sendMessage("§6Version:  1.0.0");
         player.sendMessage("§6------------------------");
     }
 

@@ -6,3 +6,4 @@ prefix: \[RC\]
 load: STARTUP
 authors: [ MrWarzo ]
 description: Génération de coffre aléatoire
+depend: [SmartInvs]
