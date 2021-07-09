@@ -1,6 +1,5 @@
 package fr.mrwarzo.randomchest.managers;
 
-import co.aikar.commands.PaperCommandManager;
 import fr.mrwarzo.randomchest.RandomChest;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -8,14 +7,16 @@ import org.bukkit.ChatColor;
 public class Managers {
     private static RandomChest instance;
     private static Managers managers;
+    private static ConfigManager configManager;
 
     public void load(RandomChest instance) {
         Managers.instance = instance;
         Managers.managers = this;
+        Managers.configManager = new ConfigManager(instance);
 
         try {
             CommandsManager.loadCommands(instance);
-            //EventsManager.register(instance);
+            configManager.setupFiles();
 
             // Envoie d'un message de validation à la console au démarrage
             Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[RandomChest] Activation reussie");
@@ -29,6 +30,7 @@ public class Managers {
 
     public void unload() {
         try {
+            configManager.saveFiles();
             // Envoie d'un message de validation à la console à la fermeture
             Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[HopperCounter] Desactivation reussie");
         } catch (Exception e) {
@@ -44,5 +46,9 @@ public class Managers {
 
     public static Managers getManagers() {
         return managers;
+    }
+
+    public static ConfigManager getConfigManager() {
+        return configManager;
     }
 }
