@@ -5,23 +5,17 @@ import fr.minuskube.inv.SmartInventory;
 import fr.minuskube.inv.content.InventoryContents;
 import fr.minuskube.inv.content.InventoryProvider;
 import fr.minuskube.inv.content.SlotPos;
-import fr.mrwarzo.randomchest.managers.Managers;
 import org.bukkit.Material;
 import org.bukkit.Sound;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public class ChestLocationMenu implements InventoryProvider {
-    static FileConfiguration cfg = Managers.getConfigManager().getConfigurationFile("config.yml");
-    static ConfigurationSection rcSection = cfg.getConfigurationSection("rcinventory");
-
     public static final SmartInventory INVENTORY = SmartInventory.builder()
             .id("chestLocationMenu")
             .provider(new ChestLocationMenu())
             .size(6, 9)
-            //.title(rcSection.getString("inv-title"))
+            .title("Où voulez-vous faire apparaître le coffre : ")
             .build();
 
     @Override
@@ -48,8 +42,8 @@ public class ChestLocationMenu implements InventoryProvider {
     }
 
     public void putChest(Player player, InventoryContents contents, int slot) {
-        int x = slot % 9;
-        int y = (int) Math.round(slot / 9.0);
+        int x = slot / 9;
+        int y = slot % 9;
 
         player.sendMessage(player.getFacing().toString());
         contents.set(new SlotPos(x, y), ClickableItem.of(new ItemStack(Material.BROWN_STAINED_GLASS_PANE),
