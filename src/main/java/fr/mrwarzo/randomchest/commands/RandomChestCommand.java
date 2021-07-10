@@ -6,6 +6,7 @@ import fr.mrwarzo.randomchest.inventory.ChestLocationMenu;
 import fr.mrwarzo.randomchest.managers.Managers;
 import org.bukkit.*;
 import org.bukkit.block.Block;
+import org.bukkit.block.Chest;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -13,6 +14,9 @@ import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static fr.mrwarzo.randomchest.tools.ChestFiller.fillChest;
+import static fr.mrwarzo.randomchest.tools.ChestFiller.itemsList;
 
 @CommandAlias("rc|randomchest|rndchest")
 public class RandomChestCommand extends BaseCommand {
@@ -40,10 +44,18 @@ public class RandomChestCommand extends BaseCommand {
 
             if (amount == 1) {
                 block.setType(Material.CHEST);
+                Chest chest = (Chest) block.getState();
+
+                fillChest(chest, itemsList());
+
                 player.sendMessage(rcSection.getString("spawn-success"));
             } else {
                 for (Location l : getSquare(player, 2, amount, maxChest)) {
-                    l.getWorld().getBlockAt(l.getBlockX(), l.getBlockY(), l.getBlockZ()).setType(Material.CHEST);
+                    block = l.getWorld().getBlockAt(l.getBlockX(), l.getBlockY(), l.getBlockZ());
+                    block.setType(Material.CHEST);
+                    Chest chest = (Chest) block.getState();
+
+                    fillChest(chest, itemsList());
                 }
                 player.sendMessage(rcSection.getString("spawn-success-multi"));
             }
@@ -77,7 +89,7 @@ public class RandomChestCommand extends BaseCommand {
         };
         int y = 0;
 
-        if(amount > maxChest) {
+        if (amount > maxChest) {
             amount = maxChest;
             player.sendMessage(rcSection.getString("too-much"));
         }

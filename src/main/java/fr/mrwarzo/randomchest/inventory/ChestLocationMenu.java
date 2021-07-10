@@ -4,14 +4,18 @@ import fr.minuskube.inv.ClickableItem;
 import fr.minuskube.inv.SmartInventory;
 import fr.minuskube.inv.content.InventoryContents;
 import fr.minuskube.inv.content.InventoryProvider;
-import fr.minuskube.inv.content.SlotPos;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Sound;
-import org.bukkit.World;
+import fr.mrwarzo.randomchest.managers.Managers;
+import org.bukkit.*;
+import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.Chest;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+
+import static fr.mrwarzo.randomchest.tools.ChestFiller.fillChest;
+import static fr.mrwarzo.randomchest.tools.ChestFiller.itemsList;
 
 public class ChestLocationMenu implements InventoryProvider {
     public static final SmartInventory INVENTORY = SmartInventory.builder()
@@ -37,13 +41,12 @@ public class ChestLocationMenu implements InventoryProvider {
     }
 
     public void putChest(Player player, InventoryContents contents, int slot) {
-        int x = slot % 9;
-        int z = slot / 9;
-
+        FileConfiguration cfg = Managers.getConfigManager().getConfigurationFile("config.yml");
+        ConfigurationSection rcSection = cfg.getConfigurationSection("randomchest");
         Location location = player.getLocation().toBlockLocation();
         World world = location.getWorld();
-
-        player.sendMessage(player.getFacing().toString());
+        int x = slot % 9;
+        int z = slot / 9;
 
         if(player.getFacing() == BlockFace.EAST || player.getFacing() == BlockFace.WEST) {
             x -= 4;
@@ -68,11 +71,13 @@ public class ChestLocationMenu implements InventoryProvider {
             }
         }
 
-        player.sendMessage("x=" + x);
-        player.sendMessage("z=" + z);
+        Block block = world.getBlockAt(location.add(x,0,z));
+        block.setType(Material.CHEST);
+        Chest chest = (Chest) block.getState();
 
-        world.getBlockAt(location.add(x,0,z)).setType(Material.CHEST);
+        fillChest(chest, itemsList());
 
+        player.sendMessage(rcSection.getString("spawn-success"));
         INVENTORY.close(player);
     }
 }
